@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BO3 Pre-Order</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h2>BO3 Pre-Order</h2>
+        <form id="preOrderForm">
+            <div class="form-group">
+                <label for="firstName">First Name:</label>
+                <input type="text" class="form-control" id="firstName" required>
+            </div>
+            <div class="form-group">
+                <label for="lastName">Last Name:</label>
+                <input type="text" class="form-control" id="lastName" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" class="form-control" id="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" class="form-control" id="password" required>
+            </div>
+            <div class="form-group">
+                <label for="dob">Date of Birth:</label>
+                <input type="date" class="form-control" id="dob" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+        <div id="result"></div>
+    </div>
+    <script>
+        $(document).ready(function(){
+            $("#preOrderForm").on("submit", function(event){
+                event.preventDefault();
+                let firstName = $("#firstName").val();
+                let lastName = $("#lastName").val();
+                let email = $("#email").val();
+                let password = $("#password").val();
+                let dob = $("#dob").val();
+                if(password.includes("!") || password.includes("?")){
+                    let user = {
+                        firstName: firstName,
+                        lastName: lastName,
+                        email: email,
+                        password: password.replace(/[^*]/g, '*'),
+                        dob: dob
+                    };
+                    $("#result").html(`<h3>Registration Successful</h3><p>First Name: ${user.firstName}</p><p>Last Name: ${user.lastName}</p><p>Email: ${user.email}</p><p>Password: ${user.password}</p><p>Date of Birth: ${user.dob}</p>`);
+                } else {
+                    $("#result").html("<h3>Registration Failed</h3><p>Password must contain a special character (! or ?)</p>");
+                }
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function(){
+            $("#preOrderForm").on("submit", function(event){
+                event.preventDefault();
+                let firstName = $("#firstName").val();
+                let lastName = $("#lastName").val();
+                let email = $("#email").val();
+                let password = $("#password").val();
+                let dob = $("#dob").val();
+
+                if(!validateEmail(email)) {
+                    $("#result").html("<h3>Registration Failed</h3><p>Please enter a valid email address</p>");
+                    return;
+                }
+
+                if(password.length < 8) {
+                    $("#result").html("<h3>Registration Failed</h3><p>Password must be at least 8 characters long</p>");
+                    return;
+                }
+
+                if(!password.includes("!") && !password.includes("?")) {
+                    $("#result").html("<h3>Registration Failed</h3><p>Password must contain at least one special character (! or ?)</p>");
+                    return;
+                }
+
+                let user = {
+                    firstName: firstName,
+                    lastName: lastName,
+                    email: email,
+                    password: password.replace(/[^*]/g, '*'),
+                    dob: dob
+                };
+
+                $("#result").html(`<h3>Registration Successful</h3><p>First Name: ${user.firstName}</p><p>Last Name: ${user.lastName}</p><p>Email: ${user.email}</p><p>Password: ${user.password}</p><p>Date of Birth: ${user.dob}</p>`);
+            });
+        });
+
+        function validateEmail(email) {
+            const re = /\S+@\S+\.\S+/;
+            return re.test(email);
+        }
+    </script>
+</body>
+</html>
