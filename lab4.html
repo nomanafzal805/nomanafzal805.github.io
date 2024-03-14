@@ -1,68 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ordering Website</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        .order-form {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        .order-form input[type="submit"] {
-            margin-top: 20px;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ordering Website</title>
 </head>
 <body>
-    <div class="container">
-        <h1>Welcome to the Anything Store!</h1>
-        <p>Please fill out the form below to place your order</p>
-        <form class="order-form">
-            <label for="name">Name:</label>
-            <input type="text" id="name" name="name" required>
-            <label for="item">Item Requested:</label>
-            <input type="text" id="item" name="item" required>
-            <label for="quantity">Number of Items:</label>
-            <input type="number" id="quantity" name="quantity" min="1" max="99" required>
-            <input type="submit" value="Place Order">
-        </form>
-        <div id="order-result"></div>
-    </div>
-    <script>
-        const form = document.querySelector('.order-form');
-        const orderResult = document.getElementById('order-result');
 
-        form.addEventListener('submit', (event) => {
-            event.preventDefault();
+<script>
+function welcomeCustomer() {
+    alert("Welcome to my store!");
+    getOrderDetails();
+}
 
-            const name = document.getElementById('name').value;
-            const item = document.getElementById('item').value;
-            const quantity = document.getElementById('quantity').value;
+function getOrderDetails() {
+    var name = prompt("What is your name?");
+    var itemRequested = prompt("What item would you like to order?");
+    var quantity = parseInt(prompt("How many items would you like to order? (1-99)"));
 
-            const currentDate = new Date();
-            const arrivalDate = new Date(currentDate.getTime() + 7 * 24 * 60 * 60 * 1000);
+    // Check if quantity is valid
+    if (quantity >= 1 && quantity <= 99) {
+        var currentDate = new Date();
+        var deliveryDate = new Date(currentDate.getTime() + 7 * 24 * 60 * 60 * 1000); // Adding 7 days
 
-            const greet = `Good ${currentDate.getHours() < 12 ? 'Morning' : currentDate.getHours() < 18 ? 'Afternoon' : 'Evening'} ${name}, Thank you for Ordering!`;
+        // Greet the customer
+        var greeting = getGreeting(currentDate.getHours(), name);
 
-            orderResult.innerHTML = `
-                <h2>Order Details</h2>
-                <p>Name: ${name}</p>
-                <p>Item Requested: ${item}</p>
-                <p>Number of Items: ${quantity}</p>
-                <p>Expected Arrival Date: ${arrivalDate.toLocaleDateString()}</p>
-                <p>${greet}</p>
-            `;
-        });
-    </script>
+        // Display order details
+        var orderDetails = "<p>" + greeting + "</p>";
+        orderDetails += "<p>You ordered " + quantity + " " + itemRequested + ".</p>";
+        orderDetails += "<p>Your order will arrive on " + deliveryDate.toDateString() + ".</p>";
+
+        document.body.innerHTML += orderDetails;
+    } else {
+        alert("Invalid quantity. Please enter a number between 1 and 99.");
+        getOrderDetails(); // Ask again for quantity
+    }
+}
+
+function getGreeting(hour, name) {
+    var greeting;
+    if (hour < 12) {
+        greeting = "Good morning";
+    } else if (hour < 18) {
+        greeting = "Good afternoon";
+    } else {
+        greeting = "Good evening";
+    }
+    return greeting + ", " + name + "! Thank you for ordering!";
+}
+
+welcomeCustomer();
+</script>
+
 </body>
 </html>
