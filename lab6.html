@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>REST API Website</title>
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    th, td {
+      border: 1px solid black;
+      padding: 8px;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+
+    img {
+      width: 200px;
+      height: 200px;
+      object-fit: cover;
+      margin-top: 20px;
+    }
+
+    button {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>REST API Website</h1>
+  
+  <table>
+    <thead>
+      <tr>
+        <th>factId</th>
+        <th>fact</th>
+      </tr>
+    </thead>
+    <tbody id="table-body">
+    </tbody>
+  </table>
+  
+  <img id="picture" src="old_picture.jpg" alt="Old Picture">
+  
+  <button id="api-button">Call API</button>
+  
+  <script>
+    document.getElementById('api-button').addEventListener('click', fetchData);
+
+    function fetchData() {
+      fetch('https://brianobruno.github.io/cats.json')
+        .then(response => response.json())
+        .then(data => {
+          // Sort by factId
+          const sortedFacts = data.facts.sort((a, b) => a.factId - b.factId);
+          
+          // Populate table with facts
+          const tableBody = document.getElementById('table-body');
+          tableBody.innerHTML = '';
+          sortedFacts.forEach(fact => {
+            const row = document.createElement('tr');
+            const idCell = document.createElement('td');
+            const factCell = document.createElement('td');
+            idCell.textContent = fact.factId;
+            factCell.textContent = fact.fact;
+            row.appendChild(idCell);
+            row.appendChild(factCell);
+            tableBody.appendChild(row);
+          });
+          
+          // Update picture with the new picture
+          const picture = document.getElementById('picture');
+          picture.src = data.picture;
+        })
+        .catch(error => console.log(error));
+    }
+  </script>
+</body>
+</html>
